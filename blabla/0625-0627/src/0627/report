@@ -1,0 +1,7 @@
+https://stackoverflow.com/questions/15222754/groupby-pandas-dataframe-and-select-most-common-value
+
+问：1013中多出来的一列是什么？
+答：（详见1013_read_1012.py)
+# [0]时，该用户只有一个cate_id的众数，即单个种类购买最多
+# [0,1]时，该用户有两个并列的cate_id的众数，例如买过3次A,3次B，后面的cate_id即这些众数
+# [0,1,2]时，该用户有三个并列的....

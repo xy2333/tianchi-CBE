@@ -1,0 +1,85 @@
+1.业务理解->2.特征构建->3.数据建模->4.评估和错误分析->1.业务理解.....
+
+
+1.1 看标签类特征有多少类:df['id'].nunique() df.info() df.describe() df.head()
+1.2 condition search: df[(df.value1>=50)&df.value2>=30)].shape
+1.3 排序后看前列和末尾：df.sort_values('time').iloc[:5,:]  df.sort_values('time').iloc[-5:,:]
+1.4 对坐标数据尝试进行聚类（直接就跑模型）与随机结果（baseline)做对比，若至少比baseline强的多，则保留
+1.5 统计共有多少存在缺失值,展示完全缺失和部分严重缺失的情况
+train_describe = train.describe()
+np.sum(train_describe.loc['count'] != 500)
+用来统计共有多少存在缺失值
+print('All missing', np.sum(train_describe.loc['count'] == 0),
+'\nSeriously missing',
+ np.sum(((train_describe.loc['count'] <= 250)&(train_describe.loc['count'] >0)) ))
+ 用来展示完全缺失和部分严重缺失的情况
+1.6 可以用SPSS进行初步的特征间影响关系分析，（部分数据预处理可以在python中完成，SPSS仅用于结果的图表展示）
+    1. 简单的聚类，线性回归等可以放在SPSS中做
+    2. SPSS支持许多统计检验方法，具体为：
+        （5）百分位值，M估计值（描述性集中趋势），正态分布的偏度、峰度
+        （6）参数检验：均值，单样本t检验，配对双样本t检验
+        （7）绘制图形：箱图，时序图等
+        （8）非参数检验：卡方检验等
+        （9）方差分析：多因素方差分析，协方差分析等
+        （10）回归分析：线性，非线性，Logistic回归等
+        （11）相关分析：Pearson相关系数（用以检验双变量的影响关系），单双侧检验等（用以检验样本平均数和总体平均数有没有显著差异）
+         Pearson相关系数：https://baike.baidu.com/item/%E7%9A%AE%E5%B0%94%E9%80%8A%E7%9B%B8%E5%85%B3%E7%B3%BB%E6%95%B0/12712835
+        （12）聚类分析：用以分类
+        （13）判别分析：“分辨法”，是在分类确定的条件下，根据某一研究对象的各种特征值判别其类型归属问题
+        （14）因子分析：从变量群中提取共性因子的统计技术
+        （15）对应分析：降维
+        （16）可靠性分析：克隆巴赫系数（Cronbach's alpha）用以检测信度。
+            信度：可靠性，它指的是采取同样的方法对同一对象重复进行测量时，其所得结果相一致的程度。（https://baike.baidu.com/item/%E4%BF%A1%E5%BA%A6）
+        （17）生存分析：探究所感兴趣的事件的发生的时间 （https://blog.csdn.net/zfcjhdq/article/details/83502854）
+        （18）对数线性模型
+        重点：（19）时序模型
+        （20）缺失值分析
+        （21）决策树模型
+        （22）神经网络
+        （23）信用风险分析
+
+2.1 特征间的线性关系影响 seaborn.pairplot
+    3010.py中对很多广告个体进行特征间的pairplot来展示线性关系影响
+    看pairplot图的思路：图例见G:\TencentADAlogrithm\Tencent2018_Final_Phrase_Presto-master\plot\pairplot去线性影响图例.png
+    1. 首先对角线左下角和右上角是对称的，只要看左下角。
+    2. 如果找到一对特征是完全呈线性相关的，则删去其中一个。（如pctr，以其直方图为中心的十字都可以忽略）
+
+2.2 时间特征可以进行预处理：isweekend();get_splitby_10minutes();
+2.3 构建技巧：groupby
+https://www.kaggle.com/crawford/python-groupby-tutorial
+Python Groupby Tutoria
+2.4 构建方法：df.join(to_be_join); list+append();
+2.5.1 DataFrame矩阵 对每条数据进行同样的操作：df[new_column] = df[existing_column1] / df[existing_column2]
+    此时必须保证各条目长度一样 而且运算合法。
+    或者数据集为原始数据集；或者使用原始数据集通过groupby+（count;sum;mean等)的结果；
+    或者通过其他方法保证
+2.5.2 DataFrame矩阵 对每条数据进行同样的操作：train['time_stamp'] = train['time_stamp'].apply(time_transform)
+2.6 构建一个充满k的n*1初始矩阵 np.ones(length) * k
+2.7 将缺失值填充为给定值：df.fillna(value)
+2.8 使用defaultdict来避免missing_key问题（用初始值代替，详见4013.py)
+2.9 遍历技巧：for i,item in enumerate(list):
+2.10 简洁的python句式：common_shopids = [x for x in train_data.shop_id.unique() if x in val_data.shop_id.unique()]
+2.11 使用isin返回boolean df，然后df[boolean_df]得到筛选后的df:
+2.12 对df的同列所有元素求和：np.sum(filter_[col+'_day_percent'] >=0.35):....
+    1. filter_[col+'_day_percent'] >=0.35 得到boolean series: True,False,False.....
+    2. np.sum(boolean_series)得到其中True的个数
+2.13 column的拼接、方差，均值，极值的计算见4016.py:get_shop_features
+
+4.1 错误分析：混淆矩阵
+    （详见4014.py)
+    cf = confusion_matrix(y_true, y_pred,labels) 构造cf时 optional:labels用以限定子集，当不给定labels时使用set(y_true)的整个集合
+    此外，构造混淆矩阵时使用labels时和下述错误率说明脚本配合使用，才可以达到预期效果
+    错误率说明脚本：
+    for i in range(len(cf)):
+        if cf[i,i] / np.sum(cf[i,:]) <= 0.5:
+            print('Seriously wrong: ',i, class_[i], cf[i,i],np.sum(cf[i,:]))
+        elif cf[i,i] / np.sum(cf[i,:]) <= 0.75:
+            print('Wrong: ',i, class_[i], cf[i,i], np.sum(cf[i,:]))
+    错误率说明输出结果中可以寻找需要纠正错误率的条目i_incorrect，然后根据以下代码得到该类别的输出类别数值最大的若干（number_last_wrong_class_）数
+    most_wrong = cf[i_incorrect,[np.argsort(cf[i_incorrect, :])[number_last_wrong_class_:]]]
+
+4.2 虽然无法对所有误差数据进行优化，可以关注错误率最高的若干个分类(回归问题中，看若干格某些范围)
+    1. 计算误差率并对结果排序得到最误差最大的若干格（分类/范围）
+    2. 利用其它数据从（业务逻辑/统计意义）不同角度进行纠正（如在蚂蚁案例中，三家中的一家的客流量能占到90%，就将其他两家强制设为客流量最大的那一家）
+
+
