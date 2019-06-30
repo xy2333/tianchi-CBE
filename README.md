@@ -6,7 +6,7 @@
 	- EDA.ipynb
 
 - **基础特征**
-	- query_feature.py
+	- *query_feature.py*
       - 之前之后购买商品的次数
       - 之前之后购买相同商品的次数
       - 之前之后购买相同商品的次数
