@@ -8,6 +8,9 @@
 ### 基础特征
 [特征下载链接](https://pan.baidu.com/s/1dnVy2BmcEWLei_G7_A0PZw)（提取码：4tkz）
 
+   - **base_feature.py **
+      - flag = 1为训练集；flag = 2为测试集
+      
    - **query_feature.py（点击类特征）**
       - 之前之后购买商品的次数
       - 之前之后购买相同商品的次数
