@@ -1,0 +1,24 @@
+#2005.py:得到每个用户的最后一次购买信息的item_id
+# 2006.py对构建 cate_id ，cate_freq_id表 表长为3078
+# 2007.py:对fav_store进行初步装箱并 对训练集将fav_cate和fav_store按频率装箱
+# 2008.py 进行sklearn的决策树建模
+# 2009.py 得到训练集的特征集合
+# 2010.py: 得到每个用户的最后一次购买信息的item_id #test_path =  '../../data/0626/Antai_AE_round1_test_20190626.csv'
+# 2011.py: 构建 cate_id ，cate_freq_id表 表长为3078
+# 2012.py:构建fav_store store_freq_i
+# 2013.py:开始对测试集进行merge 确保最后长度为166 832
+# 3000.py:对测试集的缺失数据进行分析
+# 3001.py:计算测试集用户最喜欢的商品的类型
+# 3002.py:计算测试集 用户最喜欢的店铺 
+
+
+装箱后的baseline已经完成。
+
+ 	解决y全为0的问题
+
+
+现在对测试集进行特征构建
+
+然后使用早停
+
+得到结果后 根据attri表 范围中随机选择一个item（之后策略：选择购买人数多的商品）

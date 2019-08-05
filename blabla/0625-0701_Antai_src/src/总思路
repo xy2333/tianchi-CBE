@@ -83,3 +83,6 @@ Python Groupby Tutoria
     2. 利用其它数据从（业务逻辑/统计意义）不同角度进行纠正（如在蚂蚁案例中，三家中的一家的客流量能占到90%，就将其他两家强制设为客流量最大的那一家）
 
 
+补充链接：
+8 Proven Ways for boosting the "Accuracy" of a Machine Learning Model
+https://www.analyticsvidhya.com/blog/2015/12/improve-machine-learning-results/

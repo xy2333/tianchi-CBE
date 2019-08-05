@@ -1,0 +1,21 @@
+# 3003: 计算测试集 购物时间的占比（1008+1009的整理）
+# 3004.py: 构建测试集的装箱特征
+# 3005 进行lightgbm对训练集的预测 CV 早停
+# 3006.py: 对训练集进行处理：只使用XX国家的所有数据，再去掉每个用户最后一条数据，将其作为标签
+# 3007：计算训练集：用户最喜欢的商品的类型 该训练集是去除最后一次购买记录的结果，来自3006.py
+# 3008.py:计算用户最喜欢的店铺 数据来自3006：已去除最后一条记录
+# 3009: 计算购物时间的占比 
+# 3010.py: 构建3006训练集的装箱特征 数据为已经剔除最后一条的数据
+# 3011.py:处理3006中的label 并作为y_label, merge到3010(装箱后)的结果中 直接将item_id设置为y_label
+
+
+1. reset_index实质上是把level结构的index展开，默认drop=False情况下就变成了新的列。这个level结构的Index可以通过groupby构建
+2. df[['','']]构建的是一个df，df['']构建的是一个series,series可以通过pd.DataFrame()转成df
+
+
+使用lightgbm早停对分箱标签进行CV
+
+为什么https://github.com/microsoft/LightGBM/blob/master/examples/python-guide/advanced_example.py
+# 58中   categorical_feature为[21]？ int值将会作为下标
+
+2007中y_freq_i指的是什么？ 由train_df_last_single得到，将数据集中最后（datetime)一条作为label

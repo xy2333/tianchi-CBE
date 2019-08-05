@@ -1,0 +1,49 @@
+
+
+
+
+两个商店/商品类型 所对应的客户群体的交集能否作为特征？
+
+https://www.coursera.org/lecture/competitive-data-science/concept-of-mean-encoding-b5Gxv
+目标：降低特征的基数，以适用于lightgbm等决策树对categorical feature 的基数要求较高的模型
+技术名：mean encoding(target encoding)
+要求：数据带有标签，是监督问题，
+算法过程：01分类问题中，对target标签按level进行分组，然后计算组内平均值.该平均值作为该基数的唯一标识，再生成feature_label，如下
+ feature  feature_label feature_mean target
+ f1       1             0.4          0
+ f2       1             0.4          1
+ f3       1             0.4          1
+ f4       1             0.4          0
+ f5       1             0.4          0
+in general, the more complicated and non lineral feature target dependency, the more effective is mean encoding
+
+快速得到特定类别值出现的频率 https://www.analyticsvidhya.com/blog/2015/04/comprehensive-guide-data-exploration-sas-using-python-numpy-scipy-matplotlib-pandas/
+test= df.groupby(['Gender','BMI'])
+test.size()
+快速取样#Create Sample dataframe
+from random import sample
+# create random index
+rindex = np.array(sample(xrange(len(df)), 5))
+# get 5 random rows from df
+dfr = df.ix[rindex]
+print dfr
+按照level进行去重
+rem_dup=df.drop_duplicates(['Gender', 'BMI'])
+print rem_dup
+
+catboost 难道没有内置的categorical feature处理的api吗 
+训练过程中对categorical feature的处理：
+https://catboost.ai/docs/concepts/algorithm-main-stages_cat-to-numberic.html
+没得 
+
+Simple Methods to deal with Categorical Variables in Predictive Modeling
+https://www.analyticsvidhya.com/blog/2015/11/easy-methods-deal-categorical-variables-predictive-modeling/
+按级进行合并特征值：
+1：使用domain knowledge
+2：按频率聚类和分类特征（出现频率小于5%的特征可以分类为other单独一类）
+3. response rate: positive/all_sample
+频率和response rate可以一起使用，例见上面链接
+技巧：对建模过程的各种技术进行迭代，然后再评估效果
+
+采用频率等手段进行特征构建:
+           频率值过于低（由于数据过大）

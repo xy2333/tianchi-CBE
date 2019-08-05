@@ -1,0 +1,146 @@
+How to Win a Data Science Competition: Learn from Top Kagglers
+https://www.coursera.org/lecture/competitive-data-science/extensions-and-generalizations-D09Jb
+回归情景，多分类情景
+
+
+In the final video, we will cover various generalizations and
+extensions of mean encodings.
+Namely how to do meaning coding in regression and multiclass tasks.
+How can we apply encoding to domains with many-to-many relations.
+What features can we build based on target we're able in time series.
+And finally, how to encode numerical features and interactions of features.
+Let's start with regression tasks.
+They are actually more flexible for feature encoding.
+Unlike binary classification where a mean is frankly the only meaningful
+statistic we can extract from target variable.
+In regression tasks, we can try a variety of statistics, like medium,
+percentile, standard deviation of target variable.
+We can even calculate some distribution bins.
+For example, if target variable is distributed between 1 and 100,
+we can create 10 bin features.
+In the first feature, we'll count how many data points have targeted between 1 and
+10, in the second between 10 and 20 and so on.
+Of course, we need to realize all of these features.
+In a nutshell, regression tasks are like classification.
+Just more flexible in terms of feature engineering.
+Men encoding for multi-class tasks is also pretty straightforward.
+For every feature we want to encode,
+we will have n different encodings where n is the number of classes.
+It actually has non obvious advantage.
+Three models for
+example, usually solve multi-class task in one versus old fashion.
+So every class had a different model, and
+when we feed that model, it doesn't have any information about structure
+of other classes because they are merge into one entity.
+Therefore, together with mean encodings,
+we introduce some additional information about the structure of other classes.
+The domains with many-to-many relations are usually very complex and
+require special approaches to create mean encodings.
+I will give you only a very high level idea, consider an example.
+Binary classification task for users based on apps installed on their smartphones.
+Each user may have multiple apps and each app is used by multiple users.
+Hence, many-to-many relation.
+We want to mean encode apps.
+The hard part we need to deal with is that the user may have a lot of apps.
+So let's take a cross product of user and app entities.
+It will result in a so called long representation of data.
+We will have a role for each user app pair.
+Using this table, we can naturally calculate mean encoding for apps.
+So now every app is encoded with target mean, but how to map it back to users.
+Every user has a number of apps, so
+instead of app1, app2, app3,
+we will now have a vector like 0.1, 0.2, 0.1.
+That was pretty simple.
+We can collect various statistics from those vectors, like mean,
+minimal, maximum, standard deviation, and so on.
+So far we assume that our data has no inner structure, but
+with time series we can obviously use future information.
+On one hand, it's a limitation,
+on the other hand, it actually allows us to make some complicated features.
+In data sets without time component when encoding the category,
+we are forced to use all the rules to calculate the statistic.
+It makes no sense to choose some subset of rules.
+Presence of time changes it.
+For a given category, we can't.
+For example, calculate the mean from previous day, previous two days,
+previous week, etc.
+Consider an example.
+We need to predict which categories users spends money.
+In these two example we have a period of two days, two users,
+and three spending categories.
+Some good features would be the total amount of money users
+spent in previous day.
+An average amount of money spent by all users in given category.
+So, in day 1, user 101 spends $6,
+user 102, $3.
+Therefore, we feel those numbers as future values for day 2.
+Similarly, with the average amount by category.
+The more data we have, the more complicated features we can create.
+In practice, it is often been official to mean encode numeric features and
+some combination of features.
+To encode a numeric feature, we only need to bin it and then treat as categorical.
+Now, we need to answer two questions.
+First, how to bin numeric feature, and
+second how to select useful combination of features.
+Well, we can find it out from a model structure by analyzing the trees.
+So at first, we take for example, [INAUDIBLE] model and
+raw features without any encodings.
+Let's start with numeric features.
+If numeric feature has a lot of [INAUDIBLE] points, it means that it has
+some complicated dependency with target and its was trying to mean encode it.
+Furthermore, these exact split points may be used to bin the feature.
+So by analyzing model structure,
+we both identify suspicious numeric feature and found a good way to bin it.
+It's going to be a little harder with selecting interactions, but
+nothing extraordinary.
+First, let's define how to extract to way interaction from decision tree.
+The process will be similar for three way, four way arbitrary way interactions.
+So two features interact in a tree if they are in two neighbouring notes.
+With that in mind, we can iterate through all the trees in the model and
+calculate how many times each feature interaction appeared.
+The most frequent interactions are probably worthy of mean encoding.
+For example, if we found that feature one and feature two pair is most frequent,
+then we can concatenate that those feature values in our data.
+And mean encode resulting interaction.
+Now let me illustrate how important interaction encoding may be.
+Amazon Employee Access Challenge Competition has a very specific data set.
+There are only nine categorical features.
+If we blindly fit say like GBM model on the raw features,
+then no matter how we return the parameters,
+we'll score in a 0.87 AUC range.
+Which will place roughly on 700 position on the leaderboard.
+Furthermore, even if we mean encode all the labels, we won't have any progress.
+But if we fit cat boost model, which internally
+mean encodes some feature interactions, we will immediately score in 0.91 range,
+which will place us onto win this position.
+The difference in both absolute AUC values and
+relative leaderboard positions is tremendous.
+Also note that cat boost is no silver bullet.
+In order to get even higher on the leader board,
+would still need to manually add more mean encoded interactions.
+In general, if you participate in a competition with a lot of categorical
+variables, it's always worth trying to work with interactions and mean encodings.
+I also want to remind you about correct validation process.
+During all local experiments,
+you should at first split data in X_tr and X_val parts.
+Estimate encodings on X_tr, map them to X_tr and
+X_val, and then regularize them on X_tr and
+only after that validate your model on X_tr / X_val split.
+Don't even think about estimating encodings before splitting the data.
+And at submission stage, you can estimate encodings on whole train data.
+Map it to train and test,
+then apply regularization on training data and finally fit a model.
+And note that you should have already decided on regularization method and
+its strength in local experiments.
+At the end of this section, let's summarize main advantages and
+disadvantages of mean encodings.
+First of all,
+mean encoding allows us to make a compact transformation of categorical variables.
+It is also a powerful basis for feature engineering.
+Then the main disadvantage is target rebel leakage.
+We need to be very careful with validation and irregularization.
+It also works only on specific data sets.
+It definitely won't help in every competition.
+But keep in mind, when this method works, it may produce significant improvements.
+Thank you for your attention.
+[MUSIC] 

@@ -1,0 +1,18 @@
+﻿# 2001.py:计算用户最喜欢的商品的类型
+# 2002.py:计算用户最喜欢的店铺 
+# 2003.py: 计算购物时间的占比
+
+
+问：pandas 中level是什么？ https://stackoverflow.com/questions/45235992/what-are-levels-in-a-pandas-dataframe
+2级level经由groupby(['a','b'])返回得到，可以用特定的level index（如(1-bob))得到相应值
+max_time_logged_to_an_issue = time_logged_by_user.groupby(level='IssueKey').transform('max')中的.transform('max')和.max()有何区别？
+普通的groupby('')[''].max()会改变df的长度（减少），transform是对每个元素进行匿名函数计算
+
+t = all_buy_record.groupby('buyer_admin_id')['cate_id'].apply(pd.Series.mode) 和上面的模式有何区别？
+这里是普通的1级level，上面的模式是2级level
+
+
+https://stackoverflow.com/questions/32319831/how-to-preprocess-high-cardinality-categorical-features
+思路1：使用domain knowledge
+思路2：按频率聚类和分类特征（出现频率小于5%的特征可以分类为other单独一类）
+技巧：对建模过程的各种技术进行迭代，然后再评估效果
